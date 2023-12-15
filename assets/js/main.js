@@ -7,6 +7,40 @@ let array = [
 const playerOne = 1;
 const playerTwo = 2;
 
+const container = document.querySelector("#morpionContainer");
+
+//display frame
+function displayFrame() {
+    array.forEach((e) => {
+        const row = document.createElement("div");
+        row.classList.add("row");
+        container.appendChild(row);
+        e.forEach((el) => {
+            const cell = document.createElement("div");
+            cell.classList.add("cell");
+            row.appendChild(cell);
+            cell.addEventListener("click", () => {
+                console.log(el);
+                displayCellContent(cell, true);
+            });
+        });
+    });
+}
+
+//display cell content
+function displayCellContent(cell, humanPlayer) {
+    if (humanPlayer) {
+        const img = document.createElement("img");
+        img.src = "./assets/images/cross.png";
+        img.width = "200";
+        cell.appendChild(img);
+    } else {
+        const img = document.createElement("img");
+        img.src = "./assets/images/circle.png";
+        cell.appendChild(img);
+    }
+}
+
 //check horiizontally if full of 1 or 2 and return the index of the row, else null
 function checkH(array, player) {
     rowNb = null;
@@ -55,3 +89,5 @@ function checkD(array, player) {
     }
     return diagNb;
 }
+
+displayFrame();
