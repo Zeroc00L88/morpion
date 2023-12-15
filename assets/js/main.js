@@ -37,6 +37,7 @@ function displayCellContent(cell, humanPlayer) {
     } else {
         const img = document.createElement("img");
         img.src = "./assets/images/circle.png";
+        img.width = "200";
         cell.appendChild(img);
     }
 }
