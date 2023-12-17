@@ -24,6 +24,10 @@ function displayFrame() {
                 () => {
                     playerPlay(i, j);
                     displayContent();
+                    setTimeout(() => {
+                        computerPlay();
+                        displayContent();
+                    }, "500");
                 },
                 { once: true },
             );
@@ -47,12 +51,14 @@ function displayContent() {
                 img.width = "200";
                 cell.appendChild(img);
                 img.src = "./assets/images/cross.png";
+                cell.style.pointerEvents = "none";
             } else if (el == 2) {
                 cell.innerHTML = "";
                 const img = document.createElement("img");
                 img.width = "200";
                 cell.appendChild(img);
                 img.src = "./assets/images/circle.png";
+                cell.style.pointerEvents = "none";
             }
         });
     });
@@ -65,9 +71,25 @@ function playerPlay(i, j) {
 
 //computer random play
 function computerPlay() {
-    array.forEach((e, i) => {
-        e.forEach((el, j) => {});
+    console.log("test");
+    let zero = false;
+    array.forEach((e) => {
+        e.forEach((el) => {
+            if (el == 0) {
+                zero = true;
+            }
+        });
     });
+    if (zero) {
+        i = getRandom(0, 2);
+        j = getRandom(0, 2);
+        while (array[i][j] != 0) {
+            i = getRandom(0, 2);
+            j = getRandom(0, 2);
+        }
+        console.log("i", i, "j", j);
+        array[i][j] = 2;
+    }
 }
 
 const getRandom = (min, max) => {
@@ -123,14 +145,3 @@ function checkD(array, player) {
 }
 
 displayFrame();
-
-// const img = document.createElement("img");
-// let bla = 2;
-// const testfst = document.querySelector(
-//     `#morpionContainer > :nth-child(${bla})`,
-// );
-// console.log(testfst);
-// const test = testfst.querySelector(":nth-child(2)");
-// img.src = "./assets/images/cross.png";
-// img.width = "200";
-// test.appendChild(img);
