@@ -6,15 +6,37 @@ let array = [
 
 const playerOne = 1;
 const playerTwo = 2;
+let playerSwitch = true;
 
 const container = document.querySelector("#morpionContainer");
+// const menu = document.querySelector("#menu");
+const pvpBtn = document.querySelector("#pvpBtn");
+const pvcBtn = document.querySelector("#pvcBtn");
+const mainframe = document.querySelector("#main");
+console.log(mainframe);
+
+//menu
+function displayMenu() {
+    pvpBtn.addEventListener("click", () => {
+        displayFrame("pvp");
+        menu.classList.add("hidden");
+    });
+    pvcBtn.addEventListener("click", () => {
+        displayFrame("pvc");
+        menu.classList.add("hidden");
+    });
+}
 
 //display frame
-function displayFrame() {
+function displayFrame(mode) {
+    const morpionContainer = document.createElement("div");
+    mainframe.appendChild(morpionContainer);
+    console.log(morpionContainer);
+    morpionContainer.id = "morpionContainer";
     array.forEach((e, i) => {
         const row = document.createElement("div");
         row.classList.add("row");
-        container.appendChild(row);
+        morpionContainer.appendChild(row);
         e.forEach((el, j) => {
             const cell = document.createElement("div");
             cell.classList.add("cell");
@@ -22,12 +44,17 @@ function displayFrame() {
             cell.addEventListener(
                 "click",
                 () => {
-                    playerPlay(i, j);
-                    displayContent();
-                    setTimeout(() => {
-                        computerPlay();
-                        displayContent();
-                    }, "500");
+                    switch (mode) {
+                        case "pvp":
+                            pVspPlay(i, j, playerSwitch);
+                            break;
+                        case "pvc":
+                            playerPlay(i, j);
+                            setTimeout(() => {
+                                computerPlay();
+                            }, "200");
+                            break;
+                    }
                 },
                 { once: true },
             );
@@ -65,9 +92,25 @@ function displayContent() {
 }
 
 //display cell content
+function pVspPlay(i, j) {
+    if (playerSwitch) {
+        array[i][j] = 1;
+        playerSwitch = false;
+        displayContent();
+    } else {
+        array[i][j] = 2;
+        playerSwitch = true;
+        displayContent();
+    }
+}
+
 function playerPlay(i, j) {
     array[i][j] = 1;
+    displayContent();
 }
+// function secondPlayerPlay(i, j) {
+//     displayContent();
+// }
 
 //computer random play
 function computerPlay() {
@@ -90,6 +133,7 @@ function computerPlay() {
         console.log("i", i, "j", j);
         array[i][j] = 2;
     }
+    displayContent();
 }
 
 const getRandom = (min, max) => {
@@ -144,4 +188,8 @@ function checkD(array, player) {
     return diagNb;
 }
 
-displayFrame();
+function game() {
+    displayMenu();
+}
+
+game();
