@@ -9,7 +9,6 @@ const playerTwo = 2;
 let playerSwitch = true;
 
 const container = document.querySelector("#morpionContainer");
-// const menu = document.querySelector("#menu");
 const pvpBtn = document.querySelector("#pvpBtn");
 const pvcBtn = document.querySelector("#pvcBtn");
 const mainframe = document.querySelector("#main");
@@ -49,7 +48,7 @@ function displayFrame(mode) {
                             pVspPlay(i, j, playerSwitch);
                             break;
                         case "pvc":
-                            playerPlay(i, j);
+                            pVscPlay(i, j);
                             setTimeout(() => {
                                 computerPlay();
                             }, "200");
@@ -104,13 +103,10 @@ function pVspPlay(i, j) {
     }
 }
 
-function playerPlay(i, j) {
+function pVscPlay(i, j) {
     array[i][j] = 1;
     displayContent();
 }
-// function secondPlayerPlay(i, j) {
-//     displayContent();
-// }
 
 //computer random play
 function computerPlay() {
