@@ -4,15 +4,14 @@ let array = [
     [0, 0, 0],
 ];
 
-const playerOne = 1;
-const playerTwo = 2;
 let playerSwitch = true;
 
 const container = document.querySelector("#morpionContainer");
 const pvpBtn = document.querySelector("#pvpBtn");
 const pvcBtn = document.querySelector("#pvcBtn");
 const mainframe = document.querySelector("#main");
-console.log(mainframe);
+const gameOverMenu = document.querySelector("#gameOver");
+const gameOverTitle = document.querySelector("#gameOver h2");
 
 //menu
 function displayMenu() {
@@ -30,8 +29,8 @@ function displayMenu() {
 function displayFrame(mode) {
     const morpionContainer = document.createElement("div");
     mainframe.appendChild(morpionContainer);
-    console.log(morpionContainer);
     morpionContainer.id = "morpionContainer";
+
     array.forEach((e, i) => {
         const row = document.createElement("div");
         row.classList.add("row");
@@ -46,12 +45,14 @@ function displayFrame(mode) {
                     switch (mode) {
                         case "pvp":
                             pVspPlay(i, j, playerSwitch);
+                            playerSwitch ? check(array, 2) : check(array, 1);
                             break;
                         case "pvc":
                             pVscPlay(i, j);
-                            setTimeout(() => {
+                            if (!check(array, 1)) {
                                 computerPlay();
-                            }, "200");
+                                check(array, 2);
+                            }
                             break;
                     }
                 },
@@ -110,7 +111,6 @@ function pVscPlay(i, j) {
 
 //computer random play
 function computerPlay() {
-    console.log("test");
     let zero = false;
     array.forEach((e) => {
         e.forEach((el) => {
@@ -126,7 +126,6 @@ function computerPlay() {
             i = getRandom(0, 2);
             j = getRandom(0, 2);
         }
-        console.log("i", i, "j", j);
         array[i][j] = 2;
     }
     displayContent();
@@ -135,19 +134,21 @@ function computerPlay() {
 const getRandom = (min, max) => {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 };
-//check horiizontally if full of 1 or 2 and return the index of the row, else null
-function checkH(array, player) {
+
+function check(array, player) {
+    // rows
     rowNb = null;
     array.forEach((e, i) => {
         if (e.every((v) => v == player)) {
-            row = i;
+            rowNb = i;
         }
     });
-    return rowNb;
-}
+    if (rowNb != null) {
+        gameOver("row", rowNb, player);
+        return true;
+    }
 
-//check vertically if full of 1 or 2 and return the "index" of the column, else null
-function checkV(array, player) {
+    // columns
     let colNb = null;
     array.forEach((elmt, i) => {
         let arrayTemp = [];
@@ -158,11 +159,12 @@ function checkV(array, player) {
             colNb = i;
         }
     });
-    return colNb;
-}
+    if (colNb != null) {
+        gameOver("col", colNb, player);
+        return true;
+    }
 
-//check in diagonal if full of 1 or 2 and return the diagonal 1 (for a backslah-like) and 2 (for a slash-like)
-function checkD(array, player) {
+    // diagonals
     let diagNb = null;
     let arrayTemp = [];
     array.forEach((e, i) => {
@@ -181,7 +183,27 @@ function checkD(array, player) {
             diagNb = 2;
         }
     }
-    return diagNb;
+    if (diagNb != null) {
+        gameOver("col", colNb, player);
+        return true;
+    }
+}
+
+function gameOver(direction, index, playerWin) {
+    let player = "";
+    switch (playerWin) {
+        case 1:
+            player = "Player 1";
+            break;
+        case 2:
+            player = "Player 2";
+            break;
+    }
+    document
+        .querySelectorAll(".cell")
+        .forEach((e) => (e.style.pointerEvents = "none"));
+    gameOverMenu.classList.toggle("hidden");
+    gameOverTitle.innerHTML = `${player} Win !`;
 }
 
 function game() {
