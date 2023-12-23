@@ -137,12 +137,6 @@ const getRandom = (min, max) => {
 };
 
 function check(array, player) {
-    // draw match
-
-    if (!array.some((e) => e.includes(0))) {
-        gameOver("draw", null, null);
-    }
-
     // rows
     rowNb = null;
     array.forEach((e, i) => {
@@ -192,6 +186,12 @@ function check(array, player) {
     }
     if (diagNb != null) {
         gameOver("col", colNb, player);
+        return true;
+    }
+
+    // draw match
+    if (!array.some((e) => e.includes(0))) {
+        gameOver("draw", null, null);
         return true;
     }
 }
