@@ -12,6 +12,7 @@ const pvcBtn = document.querySelector("#pvcBtn");
 const mainframe = document.querySelector("#main");
 const gameOverMenu = document.querySelector("#gameOver");
 const gameOverTitle = document.querySelector("#gameOver h2");
+const replayBtn = document.querySelector("#replayBtn");
 
 //menu
 function displayMenu() {
@@ -136,6 +137,12 @@ const getRandom = (min, max) => {
 };
 
 function check(array, player) {
+    // draw match
+
+    if (!array.some((e) => e.includes(0))) {
+        gameOver("draw", null, null);
+    }
+
     // rows
     rowNb = null;
     array.forEach((e, i) => {
@@ -194,16 +201,20 @@ function gameOver(direction, index, playerWin) {
     switch (playerWin) {
         case 1:
             player = "Player 1";
+            gameOverTitle.innerHTML = `${player} Win !`;
             break;
         case 2:
             player = "Player 2";
+            gameOverTitle.innerHTML = `${player} Win !`;
+            break;
+        case null:
+            gameOverTitle.innerHTML = "Draw !";
             break;
     }
     document
         .querySelectorAll(".cell")
         .forEach((e) => (e.style.pointerEvents = "none"));
     gameOverMenu.classList.toggle("hidden");
-    gameOverTitle.innerHTML = `${player} Win !`;
 }
 
 function game() {

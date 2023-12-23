@@ -44,7 +44,8 @@ header h1 {
     gap: 30px;
 }
 
-#menu button {
+#menu button,
+#gameOver button {
     width: 220px;
     height: 80px;
     font-size: 20px;
