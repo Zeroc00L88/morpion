@@ -13,21 +13,26 @@ const mainframe = document.querySelector("#main");
 const gameOverMenu = document.querySelector("#gameOver");
 const gameOverTitle = document.querySelector("#gameOver h2");
 const replayBtn = document.querySelector("#replayBtn");
+const menu = document.querySelector("#menu");
 
-//menu
-function displayMenu() {
-    pvpBtn.addEventListener("click", () => {
-        displayFrame("pvp");
-        menu.classList.add("hidden");
-    });
-    pvcBtn.addEventListener("click", () => {
-        displayFrame("pvc");
-        menu.classList.add("hidden");
-    });
-}
+// Menu evt listener
+pvpBtn.addEventListener("click", () => {
+    displayFrame("pvp");
+    menu.classList.add("hidden");
+});
+pvcBtn.addEventListener("click", () => {
+    displayFrame("pvc");
+    menu.classList.add("hidden");
+});
+// Game Over Menu evt listener
+replayBtn.addEventListener("click", () => {
+    console.log("replay");
+    game();
+});
 
 //display frame
 function displayFrame(mode) {
+    console.log("displayframe");
     const morpionContainer = document.createElement("div");
     mainframe.appendChild(morpionContainer);
     morpionContainer.id = "morpionContainer";
@@ -87,6 +92,8 @@ function displayContent() {
                 cell.appendChild(img);
                 img.src = "./assets/images/circle.png";
                 cell.style.pointerEvents = "none";
+            } else {
+                cell.innerHTML = "";
             }
         });
     });
@@ -218,7 +225,12 @@ function gameOver(direction, index, playerWin) {
 }
 
 function game() {
-    displayMenu();
+    gameOverMenu.classList.add("hidden");
+    array = [
+        [0, 0, 0],
+        [0, 0, 0],
+        [0, 0, 0],
+    ];
+    mainframe.removeChild(morpionContainer);
+    menu.classList.remove("hidden");
 }
-
-game();
