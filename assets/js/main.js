@@ -27,12 +27,18 @@ pvcBtn.addEventListener("click", () => {
 // Game Over Menu evt listener
 replayBtn.addEventListener("click", () => {
     console.log("replay");
-    game();
+    gameOverMenu.classList.add("hidden");
+    array = [
+        [0, 0, 0],
+        [0, 0, 0],
+        [0, 0, 0],
+    ];
+    mainframe.removeChild(morpionContainer);
+    menu.classList.remove("hidden");
 });
 
 //display frame
 function displayFrame(mode) {
-    console.log("displayframe");
     const morpionContainer = document.createElement("div");
     mainframe.appendChild(morpionContainer);
     morpionContainer.id = "morpionContainer";
@@ -145,41 +151,52 @@ const getRandom = (min, max) => {
 
 function check(array, player) {
     // rows
-    rowNb = null;
     array.forEach((e, i) => {
         if (e.every((v) => v == player)) {
-            rowNb = i;
+            switch (i) {
+                case 0:
+                    morpionContainer.classList.add("lineHorOne");
+                    break;
+                case 1:
+                    morpionContainer.classList.add("lineHorTwo");
+                    break;
+                case 2:
+                    morpionContainer.classList.add("lineHorThree");
+                    break;
+            }
+            gameOver(player);
+            return true;
         }
     });
-    if (rowNb != null) {
-        gameOver("row", rowNb, player);
-        return true;
-    }
 
     // columns
-    let colNb = null;
     array.forEach((elmt, i) => {
-        let arrayTemp = [];
-        array.forEach((e) => {
-            arrayTemp.push(e[i]);
-        });
-        if (arrayTemp.every((v) => v == player)) {
-            colNb = i;
+        if (array.every((v) => v[i] == player)) {
+            switch (i) {
+                case 0:
+                    morpionContainer.classList.add("lineVertOne");
+                    break;
+                case 1:
+                    morpionContainer.classList.add("lineVertTwo");
+                    break;
+                case 2:
+                    morpionContainer.classList.add("lineVertThree");
+                    break;
+            }
+            gameOver(player);
+            return true;
         }
     });
-    if (colNb != null) {
-        gameOver("col", colNb, player);
-        return true;
-    }
 
     // diagonals
-    let diagNb = null;
     let arrayTemp = [];
     array.forEach((e, i) => {
         arrayTemp.push(e[i]);
     });
     if (arrayTemp.every((v) => v == player)) {
-        diagNb = 1;
+        morpionContainer.classList.add("lineDiagOne");
+        gameOver(player);
+        return true;
     } else {
         let i = array.length - 1;
         arrayTemp = [];
@@ -188,22 +205,20 @@ function check(array, player) {
             i--;
         });
         if (arrayTemp.every((v) => v == player)) {
-            diagNb = 2;
+            morpionContainer.classList.add("lineDiagTwo");
+            gameOver(player);
+            return true;
         }
-    }
-    if (diagNb != null) {
-        gameOver("col", colNb, player);
-        return true;
     }
 
     // draw match
     if (!array.some((e) => e.includes(0))) {
-        gameOver("draw", null, null);
+        gameOver(null);
         return true;
     }
 }
 
-function gameOver(direction, index, playerWin) {
+function gameOver(playerWin) {
     let player = "";
     switch (playerWin) {
         case 1:
@@ -222,15 +237,4 @@ function gameOver(direction, index, playerWin) {
         .querySelectorAll(".cell")
         .forEach((e) => (e.style.pointerEvents = "none"));
     gameOverMenu.classList.toggle("hidden");
-}
-
-function game() {
-    gameOverMenu.classList.add("hidden");
-    array = [
-        [0, 0, 0],
-        [0, 0, 0],
-        [0, 0, 0],
-    ];
-    mainframe.removeChild(morpionContainer);
-    menu.classList.remove("hidden");
 }
