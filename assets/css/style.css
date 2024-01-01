@@ -37,6 +37,27 @@ header h1 {
     color: white;
 }
 
+#playerTurn {
+    height: 30px;
+    width: 300px;
+    text-align: center;
+    font-size: 25px;
+    font-weight: bold;
+    animation: bounce-zoom 1.2s ease-in-out infinite;
+}
+
+@keyframes bounce-zoom {
+    0% {
+        transform: scale(1, 1);
+    }
+    50% {
+        transform: scale(1.1, 1.1);
+    }
+    100% {
+        transform: scale(1, 1);
+    }
+}
+
 #menu div {
     display: flex;
     align-items: center;
@@ -56,8 +77,10 @@ main {
     position: relative;
     height: calc(100vh - 80px);
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
+    gap: 20px;
 }
 
 .row {

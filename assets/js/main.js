@@ -14,19 +14,28 @@ const gameOverMenu = document.querySelector("#gameOver");
 const gameOverTitle = document.querySelector("#gameOver h2");
 const replayBtn = document.querySelector("#replayBtn");
 const menu = document.querySelector("#menu");
+const playerTurn = document.querySelector("#playerTurn p");
 
 // Menu evt listener
 pvpBtn.addEventListener("click", () => {
+    if (playerSwitch) {
+        playerTurn.innerHTML = "Player 1 Play ...";
+        playerTurn.style.color = "#53b849";
+    } else {
+        playerTurn.innerHTML = "Player 2 Play ...";
+        playerTurn.style.color = "#CA343E";
+    }
     displayFrame("pvp");
     menu.classList.add("hidden");
 });
 pvcBtn.addEventListener("click", () => {
+    playerTurn.innerHTML = "Player 1 Play ...";
+    playerTurn.style.color = "#53b849";
     displayFrame("pvc");
     menu.classList.add("hidden");
 });
 // Game Over Menu evt listener
 replayBtn.addEventListener("click", () => {
-    console.log("replay");
     gameOverMenu.classList.add("hidden");
     array = [
         [0, 0, 0],
@@ -61,10 +70,7 @@ function displayFrame(mode) {
                             break;
                         case "pvc":
                             pVscPlay(i, j);
-                            if (!check(array, 1)) {
-                                computerPlay();
-                                check(array, 2);
-                            }
+                            computerPlay();
                             break;
                     }
                 },
@@ -108,10 +114,14 @@ function displayContent() {
 //display cell content
 function pVspPlay(i, j) {
     if (playerSwitch) {
+        playerTurn.innerHTML = "Player 2 Play ...";
+        playerTurn.style.color = "#CA343E";
         array[i][j] = 1;
         playerSwitch = false;
         displayContent();
     } else {
+        playerTurn.innerHTML = "Player 1 Play ...";
+        playerTurn.style.color = "#53b849";
         array[i][j] = 2;
         playerSwitch = true;
         displayContent();
@@ -119,30 +129,45 @@ function pVspPlay(i, j) {
 }
 
 function pVscPlay(i, j) {
+    playerTurn.innerHTML = "Player 2 Play ...";
+    playerTurn.style.color = "#CA343E";
     array[i][j] = 1;
     displayContent();
 }
 
 //computer random play
 function computerPlay() {
-    let zero = false;
-    array.forEach((e) => {
-        e.forEach((el) => {
-            if (el == 0) {
-                zero = true;
-            }
+    if (!check(array, 1)) {
+        document
+            .querySelectorAll(".cell")
+            .forEach((e) => (e.style.pointerEvents = "none"));
+        let zero = false;
+        array.forEach((e) => {
+            e.forEach((el) => {
+                if (el == 0) {
+                    zero = true;
+                }
+            });
         });
-    });
-    if (zero) {
-        i = getRandom(0, 2);
-        j = getRandom(0, 2);
-        while (array[i][j] != 0) {
+        if (zero) {
             i = getRandom(0, 2);
             j = getRandom(0, 2);
+            while (array[i][j] != 0) {
+                i = getRandom(0, 2);
+                j = getRandom(0, 2);
+            }
+            array[i][j] = 2;
         }
-        array[i][j] = 2;
+        setTimeout(() => {
+            displayContent();
+            document
+                .querySelectorAll(".cell")
+                .forEach((e) => (e.style.pointerEvents = "auto"));
+            playerTurn.innerHTML = "Player 1 Play ...";
+            playerTurn.style.color = "#53b849";
+            check(array, 2);
+        }, 1500);
     }
-    displayContent();
 }
 
 const getRandom = (min, max) => {
@@ -151,8 +176,10 @@ const getRandom = (min, max) => {
 
 function check(array, player) {
     // rows
+    rowNb = null;
     array.forEach((e, i) => {
         if (e.every((v) => v == player)) {
+            rowNb = i;
             switch (i) {
                 case 0:
                     morpionContainer.classList.add("lineHorOne");
@@ -165,11 +192,31 @@ function check(array, player) {
                     break;
             }
             gameOver(player);
-            return true;
         }
     });
+    if (rowNb != null) return true;
 
     // columns
+    let colNb = null;
+    array.forEach((elmt, i) => {
+        if (array.every((v) => v[i] == player)) {
+            colNb = i;
+            switch (i) {
+                case 0:
+                    morpionContainer.classList.add("lineVertOne");
+                    break;
+                case 1:
+                    morpionContainer.classList.add("lineVertTwo");
+                    break;
+                case 2:
+                    morpionContainer.classList.add("lineVertThree");
+                    break;
+            }
+            gameOver(player);
+        }
+    });
+    if (colNb != null) return true;
+
     array.forEach((elmt, i) => {
         if (array.every((v) => v[i] == player)) {
             switch (i) {
@@ -224,13 +271,16 @@ function gameOver(playerWin) {
         case 1:
             player = "Player 1";
             gameOverTitle.innerHTML = `${player} Win !`;
+            playerTurn.innerHTML = "";
             break;
         case 2:
             player = "Player 2";
             gameOverTitle.innerHTML = `${player} Win !`;
+            playerTurn.innerHTML = "";
             break;
         case null:
             gameOverTitle.innerHTML = "Draw !";
+            playerTurn.innerHTML = "";
             break;
     }
     document
