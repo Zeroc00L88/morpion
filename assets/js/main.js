@@ -159,12 +159,10 @@ function computerPlay() {
             array[i][j] = 2;
         }
         setTimeout(() => {
-            displayContent();
             document.querySelectorAll(".cell").forEach((e) => {
-                if (e.innerHTML == "") {
-                    e.style.pointerEvents = "auto";
-                }
+                e.style.pointerEvents = "auto";
             });
+            displayContent();
             playerTurn.innerHTML = "Player 1 Play ...";
             playerTurn.style.color = "#53b849";
             check(array, 2);
