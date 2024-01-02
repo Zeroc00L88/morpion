@@ -160,9 +160,11 @@ function computerPlay() {
         }
         setTimeout(() => {
             displayContent();
-            document
-                .querySelectorAll(".cell")
-                .forEach((e) => (e.style.pointerEvents = "auto"));
+            document.querySelectorAll(".cell").forEach((e) => {
+                if (e.innerHTML == "") {
+                    e.style.pointerEvents = "auto";
+                }
+            });
             playerTurn.innerHTML = "Player 1 Play ...";
             playerTurn.style.color = "#53b849";
             check(array, 2);
