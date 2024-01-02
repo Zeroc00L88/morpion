@@ -3,9 +3,13 @@
     padding: 0;
 }
 
+body {
+    background: url(../images/bg.jpg);
+}
+
 header {
     height: 80px;
-    background: lightgray;
+    background: rgba(0, 0, 0, 0.7);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -13,6 +17,7 @@ header {
 
 header h1 {
     font-size: xxx-large;
+    color: white;
 }
 
 .window {
@@ -38,10 +43,10 @@ header h1 {
 }
 
 #playerTurn {
+    text-shadow: 1px 1px black;
     height: 30px;
-    width: 300px;
     text-align: center;
-    font-size: 25px;
+    font-size: 30px;
     font-weight: bold;
     animation: bounce-zoom 1.2s ease-in-out infinite;
 }
@@ -102,7 +107,7 @@ main {
 
 #morpionContainer {
     position: relative;
-    background: lightgrey;
+    background: rgba(0, 0, 0, 0.7);
     aspect-ratio: 1 / 1;
     min-height: 90%;
     display: flex;

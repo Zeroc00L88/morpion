@@ -129,7 +129,7 @@ function pVspPlay(i, j) {
 }
 
 function pVscPlay(i, j) {
-    playerTurn.innerHTML = "Player 2 Play ...";
+    playerTurn.innerHTML = "Player 2 (computer) Play ...";
     playerTurn.style.color = "#CA343E";
     array[i][j] = 1;
     displayContent();
@@ -216,24 +216,6 @@ function check(array, player) {
         }
     });
     if (colNb != null) return true;
-
-    array.forEach((elmt, i) => {
-        if (array.every((v) => v[i] == player)) {
-            switch (i) {
-                case 0:
-                    morpionContainer.classList.add("lineVertOne");
-                    break;
-                case 1:
-                    morpionContainer.classList.add("lineVertTwo");
-                    break;
-                case 2:
-                    morpionContainer.classList.add("lineVertThree");
-                    break;
-            }
-            gameOver(player);
-            return true;
-        }
-    });
 
     // diagonals
     let arrayTemp = [];
